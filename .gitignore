@@ -1,0 +1,14 @@
+.DS_Store
+.npmignore
+node_modules/
+node_modules/*
+packages/
+packages/*
+tmp/
+tmp/*
+logs/
+logs/*
+pids/
+pids/*
+*.log
+*.out

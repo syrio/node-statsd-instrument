@@ -1,0 +1,14 @@
+{
+  "name"            : "node-statsd-instrument",
+  "description"     : "Provides metaprogramming methods to inject StatsD instrumentation using node-statsd",
+  "keywords"        : [ "StatsD", "StatsD client", "Instrumentation"],
+  "author"          : "Syrio",
+  "repository"      : { "type" : "git", "url" : "git://github.com/syrio/node-statsd-instrument.git" },
+  "dependencies"    : { "node-statsd" : "0.0.x" },
+  "devDependencies" : { "coffee-script": "1.1.x", "vows": ">=0.5.10", "sinon" : "1.1.x" },
+  "main"            : "lib/statsd-instrument.js",
+  "directories"     : { "test": "./test/spec" },
+  "scripts"         : { "test": "vows test/spec/*.js" },
+  "version"         : "0.0.1",
+  "engines"         : { "node" : ">=0.4.5" }
+}
