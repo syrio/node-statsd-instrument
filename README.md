@@ -5,7 +5,7 @@
 
 This module is based on the excellent [Shopify statsd-instrument Ruby module](https://github.com/Shopify/statsd-instrument/) and it allows instrumentation of methods so that they will measure and count StatsD metrics without coupling the actual StatsD plumbing code with your logic code. As Shopify puts it - "lets you define all of your instrumentation in one file and not litter your code with instrumentation details".
 
-Unlike the Shopify module, which implements it's own Ruby StatsD client handling (UDP) communication against the StatsD server, this module only provides the instrumentation functions and relies on the existing [node-statsd module by sivy](https://github.com/sivy/node-statsd) for communicating with the Etsy StatsD server.
+Unlike the Shopify module, which implements it's own Ruby StatsD client handling (UDP) communication against the StatsD server, this module only provides the instrumentation functions and relies on the existing [node-statsd module](https://github.com/sivy/node-statsd) by [sivy](https://github.com/sivy) for communicating with the Etsy StatsD server.
 
 ## Major differences from Shopify statsd-instrument for Ruby
 
@@ -26,16 +26,16 @@ npm install node-statsd-instrument
 StatsD = require('node-statsd').StatsD;
 StatsDInstrumentation = require('node-statsd-instrument').StatsDInstrumentation;
 
-statsd\_client = new StatsD('127.0.0.1', 8125);
-statsd\_instrument = new StatsDInstrumentation(statsd_client);
+statsd_client = new StatsD('127.0.0.1', 8125);
+statsd_instrument = new StatsDInstrumentation(statsd_client);
 ```
 or you can use node-statsd StatsD client straight from this module -
 
 ``` javascript
 instrument = require('node-statsd-instrument');
 
-statsd\_client = new instrument.StatsD('127.0.0.1', 8125);
-statsd\_instrument = new instrument.StatsDInstrumentation(statsd_client);
+statsd_client = new instrument.StatsD('127.0.0.1', 8125);
+statsd_instrument = new instrument.StatsDInstrumentation(statsd_client);
 ```
 
 
@@ -44,7 +44,7 @@ statsd\_instrument = new instrument.StatsDInstrumentation(statsd_client);
 If you have a method in an object you would like to instrument, do this -
 
 ``` javascript
-statsd_instrument.count(some\_object, 'some\_object\_method', 'some.counter')
+statsd_instrument.count(some_object, 'some_object_method', 'some.counter')
 ```
 
 ### Instrumenting Class Methods
@@ -52,7 +52,7 @@ statsd_instrument.count(some\_object, 'some\_object\_method', 'some.counter')
 You can instrument prototypal class-like methods just like object methods by using the metaprogramming methods. You simply need to give the 'class' prototype as the object -
 
 ``` javascript
-statsd\_instrument.count(SomeClass.prototype, 'some_class_method', 'some.counter')
+statsd_instrument.count(SomeClass.prototype, 'some_class_method', 'some.counter')
 ```
 
 ## Metaprogramming Methods
@@ -64,7 +64,7 @@ Use the methods provided below to instrument methods in your objects.
 This will increment the given key even if the method doesn't finish successfully (returns false, raises).s
 
 ``` javascript
-statsd\_instrument.count(some\_object, 'some\_object\_method', 'some.counter')
+statsd_instrument.count(some_object, 'some_object_method', 'some.counter')
 ```
 
 ### measure
@@ -72,7 +72,7 @@ statsd\_instrument.count(some\_object, 'some\_object\_method', 'some.counter')
 This will measure the method's runtime (in milliseconds) and report it to StatsD using the StatsD timing counter (StatsD.timing from node-statsd).
 
 ``` javascript
-statsd\_instrument.measure(some\_object, 'some\_object\_method', 'some.timing.counter')
+statsd_instrument.measure(some_object, 'some_object_method', 'some.timing.counter')
 ```
 
 ### count\_if
@@ -80,7 +80,7 @@ statsd\_instrument.measure(some\_object, 'some\_object\_method', 'some.timing.co
 This will only increment the given key if the method executes successfully.
 
 ``` javascript
-statsd\_instrument.count_if(some\_object, 'some\_object\_method', 'some.counter')
+statsd_instrument.count_if(some_object, 'some_object_method', 'some.counter')
 ```
 
 So now, if some\_object.some\_object\_method raises an exception or returns false (ie. result == false), we won't increment the counter. 
@@ -89,7 +89,8 @@ You can pass a function to evaluate what success and failure means -
 
 ``` javascript
 controller.request.url = 'someFatResource'
-statsd\_instrument.count_success(some\_controller, 'responseReceived', controller.request.url+'.cached', function() { this.response.source == 'cache' } )
+statsd_instrument.count_success(some_controller, 'responseReceived', controller.request.url+'.cached', function() { 
+                                this.response.source == 'cache' } )
 ```
 
 If the response was given to the client from the cache, then the evaluating function will return true and so _someFatResource.cached_ counter will be increased. Nothing happens if the evaluating function returns false.
@@ -101,7 +102,7 @@ Do note that the given function is binded to the instrumented object, which is _
 Similar to count\_if, except this will increment one key in the case of success and another key in the case of failure.
 
 ``` javascript
-statsd\_instrument.count_success(some\_object, 'some\_object\_method', 'some.counter')
+statsd_instrument.count_success(some_object, 'some_object_method', 'some.counter')
 ```
 
 If this method fails execution (raises or returns false) the failure counter will be incremented ('some.counter.failure'), otherwise it will be the success counter ('some.counter.success').
@@ -110,7 +111,8 @@ Again, you can pass a function to evaluate what success and failure means -
 
 ``` javascript
 controller.request.url = 'someFatResource'
-statsd\_instrument.count_success(some\_controller, 'responseReceived', controller.request.url+'.caching', function() { this.response.source == 'cache' } )
+statsd_instrument.count_success(some_controller, 'responseReceived', controller.request.url+'.caching', function() { 
+                                this.response.source == 'cache' } )
 ```
 
 If the response was given to the client from the cache, then the evaluating function will return true and this will be considered a success and so the _someFatResource.caching.success_ counter will be increased. Otherwise, the evaluating function will return false and _someFatResource.caching.failure_ will be increased, indicating that there was a failure in caching _someFatResource_.
