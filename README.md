@@ -15,8 +15,7 @@ Unlike the Shopify module, which implements it's own Ruby StatsD client handling
 
 ## Installation
 
-npm install node-statsd-instrument 
-
+    % npm install node-statsd-instrument
 
 ## Usage
 
