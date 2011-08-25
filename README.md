@@ -87,8 +87,8 @@ So now, if some\_object.some\_object\_method raises an exception or returns fals
 You can pass a function to evaluate what success and failure means -
 
 ``` javascript
-controller.request.url = 'someFatResource'
-statsd_instrument.count_success(some_controller, 'responseReceived', controller.request.url+'.cached', function() { 
+some_controller.request.url = 'someFatResource'
+statsd_instrument.count_success(some_controller, 'responseReceived', some_controller.request.url+'.cached', function() { 
                                 this.response.source == 'cache' } )
 ```
 
@@ -109,8 +109,8 @@ If this method fails execution (raises or returns false) the failure counter wil
 Again, you can pass a function to evaluate what success and failure means - 
 
 ``` javascript
-controller.request.url = 'someFatResource'
-statsd_instrument.count_success(some_controller, 'responseReceived', controller.request.url+'.caching', function() { 
+some_controller.request.url = 'someFatResource'
+statsd_instrument.count_success(some_controller, 'responseReceived', some_controller.request.url+'.caching', function() { 
                                 this.response.source == 'cache' } )
 ```
 
